@@ -29,10 +29,10 @@ namespace BackEnd.controller
             }
             try
             {
-                var userLogin = await _Dbcontext.Logins.FirstOrDefaultAsync(x => x.email == user.email && x.password == user.password);
+                var userLogin = await _Dbcontext.Logins.FirstOrDefaultAsync(x => x.email == user.email);
                 if (userLogin == null)
                 {
-                    return BadRequest("Email ou Senha Incorretos");
+                    return BadRequest("Ele é null");
                 }
                 if (BCrypt.Net.BCrypt.Verify(user.password, userLogin.password))
                 {
@@ -45,12 +45,12 @@ namespace BackEnd.controller
             }
             catch
             {
-                return BadRequest("Email ou Senha Incorretos");
+                return BadRequest("ERRO AO REALIZAR LOGIN");
 
             }
 
         }
-        [HttpPost("Cadastro")]
+        [HttpPost("Register")]
 
         public async Task<ActionResult> Register([FromBody] Login userRegister)
         {
@@ -60,6 +60,17 @@ namespace BackEnd.controller
             }
             try
             {
+
+                var checkUser = await _Dbcontext.Logins.FirstOrDefaultAsync(x => x.email == userRegister.email);
+                if (checkUser != null)
+                {
+                    return Conflict("Email já cadastrado");
+                }
+                var checkUserName = await _Dbcontext.Logins.FirstOrDefaultAsync(x => x.nameUser == userRegister.nameUser);
+                if (checkUserName != null)
+                {
+                    return Conflict("Nome de Usuario ja cadastrado");
+                }
                 var searchUser = await _Dbcontext.Logins.FirstOrDefaultAsync(x => x.email == userRegister.email);
                 if (searchUser == null)
                 {
@@ -72,7 +83,7 @@ namespace BackEnd.controller
                 {
                     return BadRequest("Email ja cadastrado");
                 }
-                
+
             }
             catch
             {
