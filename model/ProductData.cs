@@ -37,4 +37,23 @@ namespace BackEnd.model
         public DateTime? DateEnd { get; set; }
         public decimal? OfferPrice { get; set; }
     }
+    public class SearchData
+    {
+        public string Name { get; set; }
+    }
+
+    public class ProductEditing
+    {
+        
+        public string Name { get; set; }
+        public string Marker { get; set; }
+        public string Category { get; set; }
+        public string Description { get; set; }
+        
+        public decimal PriceProduct { get; set; }
+        public DateTime? DateStart { get; set; }
+        public DateTime? DateEnd { get; set; }
+        public decimal? OfferPrice { get; set; }
+    }
+
 }
